@@ -1,8 +1,11 @@
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+function getCors(): Record<string, string> {
+  const origin = Deno.env.get('ALLOWED_ORIGIN') ?? '*'
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  }
 }
 
 const SLUGS_PERMITIDOS = new Set([
@@ -42,7 +45,7 @@ export function validarCPF(cpf: string): boolean {
 function jsonResponse(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...CORS, 'Content-Type': 'application/json' },
+    headers: { ...getCors(), 'Content-Type': 'application/json' },
   })
 }
 
@@ -67,7 +70,7 @@ async function chamarApiExtra(
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: CORS })
+  if (req.method === 'OPTIONS') return new Response(null, { headers: getCors() })
 
   const authHeader = req.headers.get('Authorization')
   if (!authHeader) return jsonResponse({ tipo: 'erro_sistema', motivo: 'Nao autorizado' }, 401)

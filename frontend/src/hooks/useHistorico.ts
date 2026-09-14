@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { ConsultaRow, Veredito, TipoResultado } from '../types'
+import { ConsultaRow, DadosExtras, Veredito, TipoResultado } from '../types'
 
 export type FiltroVeredito = Veredito | TipoResultado | ''
 
@@ -33,19 +33,29 @@ export function useHistorico() {
     let cancelled = false
     setLoading(true)
 
+    // Carrega sem dados_extras — campo pesado carregado sob demanda ao selecionar linha
     supabase
       .from('consultas')
-      .select('*, profiles(nome)')
+      .select('id, cpf, score, veredito, faixa, tipo_resultado, motivo_erro, loja_id, operador_id, documento_conferido, forcou_nova, motivo_forca, criado_em, apis_utilizadas, profiles(nome)')
       .order('criado_em', { ascending: false })
       .then(({ data, error: err }) => {
         if (cancelled) return
         if (err) setError(err.message)
-        else setRows((data ?? []) as ConsultaRow[])
+        else setRows((data ?? []).map(r => ({ ...r, dados_extras: null })) as ConsultaRow[])
         setLoading(false)
       })
 
     return () => { cancelled = true }
   }, [])
+
+  async function loadDadosExtras(id: string): Promise<DadosExtras | null> {
+    const { data } = await supabase
+      .from('consultas')
+      .select('dados_extras')
+      .eq('id', id)
+      .single()
+    return (data?.dados_extras as DadosExtras) ?? null
+  }
 
   const operadores = useMemo(() => {
     const nomes = new Set(
@@ -97,5 +107,6 @@ export function useHistorico() {
     setPagina,
     totalPaginas,
     operadores,
+    loadDadosExtras,
   }
 }

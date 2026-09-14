@@ -5,7 +5,7 @@ import { DadosExtrasView } from '../components/DadosExtrasView'
 import { useHistorico } from '../hooks/useHistorico'
 import { formatCPF, formatDate, exportToCSV } from '../lib/formatters'
 import { inp } from '../lib/styles'
-import { ConsultaRow } from '../types'
+import { ConsultaRow, DadosExtras } from '../types'
 
 export function Historico() {
   const {
@@ -13,12 +13,25 @@ export function Historico() {
     filtros, setFiltros,
     pagina, setPagina, totalPaginas,
     operadores,
+    loadDadosExtras,
   } = useHistorico()
 
   const [selectedRow, setSelectedRow] = useState<ConsultaRow | null>(null)
+  const [selectedExtras, setSelectedExtras] = useState<DadosExtras | null>(null)
+  const [extrasLoading, setExtrasLoading] = useState(false)
 
-  function handleRowClick(row: ConsultaRow) {
-    setSelectedRow(prev => prev?.id === row.id ? null : row)
+  async function handleRowClick(row: ConsultaRow) {
+    if (selectedRow?.id === row.id) {
+      setSelectedRow(null)
+      setSelectedExtras(null)
+      return
+    }
+    setSelectedRow(row)
+    setSelectedExtras(null)
+    setExtrasLoading(true)
+    const extras = await loadDadosExtras(row.id)
+    setSelectedExtras(extras)
+    setExtrasLoading(false)
   }
 
   function handleExportCSV() {
@@ -237,11 +250,13 @@ export function Historico() {
                     </div>
                   ))}
 
-                  {/* Dados extras */}
-                  {selectedRow.dados_extras && Object.keys(selectedRow.dados_extras).length > 0 ? (
+                  {/* Dados extras — carregados sob demanda */}
+                  {extrasLoading ? (
+                    <div className="px-5 py-5 flex justify-center"><Spinner size="sm" /></div>
+                  ) : selectedExtras && Object.keys(selectedExtras).length > 0 ? (
                     <div className="px-5 py-5">
                       <p className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-4">Dados adicionais</p>
-                      <DadosExtrasView dados={selectedRow.dados_extras} />
+                      <DadosExtrasView dados={selectedExtras} />
                     </div>
                   ) : (
                     <div className="px-5 py-5 text-center">

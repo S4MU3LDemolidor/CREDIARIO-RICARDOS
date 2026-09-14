@@ -15,6 +15,8 @@ const SLUGS_PERMITIDOS = new Set([
   'registration-brazil',
   'cadastro-pf-plus',
   'assistencia-social-pf',
+  'boa-vista-acerta-pf',
+  'protestos-brasil',
 ])
 
 /** Regra de decisao pelo numero — exportada para testes */

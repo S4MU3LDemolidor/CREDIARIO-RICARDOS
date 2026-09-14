@@ -49,11 +49,12 @@ export function useHistorico() {
   }, [])
 
   async function loadDadosExtras(id: string): Promise<DadosExtras | null> {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('consultas')
       .select('dados_extras')
       .eq('id', id)
       .single()
+    if (error) { console.error('loadDadosExtras failed:', error); return null }
     return (data?.dados_extras as DadosExtras) ?? null
   }
 

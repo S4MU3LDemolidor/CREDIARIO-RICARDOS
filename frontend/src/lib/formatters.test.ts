@@ -45,3 +45,24 @@ describe('isValidCPF', () => {
     expect(isValidCPF('')).toBe(false)
   })
 })
+
+describe('isValidCPF — digitos verificadores', () => {
+  it('retorna true para CPF valido 529.982.247-25', () => {
+    expect(isValidCPF('529.982.247-25')).toBe(true)
+  })
+  it('retorna true para CPF valido sem mascara 52998224725', () => {
+    expect(isValidCPF('52998224725')).toBe(true)
+  })
+  it('retorna false para CPF com digito verificador errado', () => {
+    expect(isValidCPF('529.982.247-26')).toBe(false)
+  })
+  it('retorna false para sequencia repetida 111.111.111-11', () => {
+    expect(isValidCPF('111.111.111-11')).toBe(false)
+  })
+  it('retorna false para sequencia repetida 000.000.000-00', () => {
+    expect(isValidCPF('000.000.000-00')).toBe(false)
+  })
+  it('retorna false para 999.999.999-99', () => {
+    expect(isValidCPF('999.999.999-99')).toBe(false)
+  })
+})

@@ -11,7 +11,23 @@ export function formatCPF(cpf: string): string {
 }
 
 export function isValidCPF(cpf: string): boolean {
-  return stripCPF(cpf).length === 11
+  const d = stripCPF(cpf)
+  if (d.length !== 11) return false
+  if (/^(\d)\1{10}$/.test(d)) return false   // rejeita 000...0, 111...1, etc.
+
+  // Primeiro dígito verificador
+  let sum = 0
+  for (let i = 0; i < 9; i++) sum += parseInt(d[i]) * (10 - i)
+  const rem1 = sum % 11
+  const d1 = rem1 < 2 ? 0 : 11 - rem1
+  if (parseInt(d[9]) !== d1) return false
+
+  // Segundo dígito verificador
+  sum = 0
+  for (let i = 0; i < 10; i++) sum += parseInt(d[i]) * (11 - i)
+  const rem2 = sum % 11
+  const d2 = rem2 < 2 ? 0 : 11 - rem2
+  return parseInt(d[10]) === d2
 }
 
 export function formatDate(isoString: string): string {

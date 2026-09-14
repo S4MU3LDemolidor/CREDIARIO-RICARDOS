@@ -1,6 +1,7 @@
 import {
   Veredito, DadosExtras,
   NivelSocioeconomico, ProcessosJudiciais, AntecedentesCriminais, AssistenciaSocial,
+  BoaVistaAcertaPF, ProtestosBrasil,
 } from '../types'
 
 export type TipoMoradia = 'nao_informado' | 'propria' | 'familiar' | 'alugada'
@@ -103,6 +104,30 @@ export function calcularRecomendacao(
     const a = assist as AssistenciaSocial
     if (a.bpc)          positivos.push('Recebe BPC — renda garantida')
     if (a.bolsaFamilia) positivos.push('Beneficiário Bolsa Família')
+  }
+
+  const bv = dadosExtras['boa-vista-acerta-pf']
+  if (bv && !('erro' in bv)) {
+    const b = bv as BoaVistaAcertaPF
+    const qtdPend = parseInt(b.pendenciasFinanceiras?.quantidadeOcorrencia ?? '0')
+    const qtdRest = parseInt(b.restricoes?.quantidadeOcorrencias ?? '0')
+    const qtdChq  = parseInt(b.chequeSemFundoBacen?.quantidadeOcorrencia ?? '0')
+
+    if (qtdPend === 0)      { pts += 5;  positivos.push('Sem pendências financeiras (Boa Vista)') }
+    else if (qtdPend <= 2)  { pts -= 10; negativos.push(`${qtdPend} pendência(s) financeira(s) (Boa Vista)`) }
+    else                    { pts -= 20; negativos.push(`${qtdPend} pendências financeiras (Boa Vista)`) }
+
+    if (qtdRest > 0) { pts -= 10; negativos.push(`${qtdRest} restrição(ões) cadastral(is) (Boa Vista)`) }
+    if (qtdChq  > 0) { pts -= 15; negativos.push('Cheque sem fundo registrado (BACEN)') }
+  }
+
+  const prot = dadosExtras['protestos-brasil']
+  if (prot && !('erro' in prot)) {
+    const p = prot as ProtestosBrasil
+    const total = p.numeroTotalProtestos ?? 0
+    if (!p.constamProtestos)  { pts += 5;  positivos.push('Sem protestos em cartório') }
+    else if (total <= 2)      { pts -= 10; negativos.push(`${total} protesto(s) em cartório`) }
+    else                      { pts -= 20; negativos.push(`${total} protestos em cartório`) }
   }
 
   if (veredito === 'APROVADO') {

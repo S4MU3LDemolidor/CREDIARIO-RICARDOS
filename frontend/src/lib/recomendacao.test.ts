@@ -41,3 +41,54 @@ describe('calcularRecomendacao', () => {
     expect(comAntecedentes.fatoresNegativos.some(f => f.includes('criminais'))).toBe(true)
   })
 })
+
+describe('boa-vista-acerta-pf', () => {
+  it('sem pendencias e sem restricoes adiciona ponto positivo', () => {
+    const rec = calcularRecomendacao(800, 'APROVADO', extraBase, {
+      'boa-vista-acerta-pf': {
+        pendenciasFinanceiras: { quantidadeOcorrencia: '0' },
+        restricoes: { quantidadeOcorrencias: '0' },
+        chequeSemFundoBacen: { quantidadeOcorrencia: '0' },
+      },
+    })
+    expect(rec.fatoresPositivos.some(f => f.includes('pendências'))).toBe(true)
+  })
+
+  it('pendencias financeiras penalizam', () => {
+    const rec = calcularRecomendacao(800, 'APROVADO', extraBase, {
+      'boa-vista-acerta-pf': {
+        pendenciasFinanceiras: { quantidadeOcorrencia: '3', valorTotal: '5000' },
+        restricoes: { quantidadeOcorrencias: '0' },
+        chequeSemFundoBacen: { quantidadeOcorrencia: '0' },
+      },
+    })
+    expect(rec.fatoresNegativos.some(f => f.includes('pendência'))).toBe(true)
+  })
+
+  it('cheque sem fundo penaliza', () => {
+    const rec = calcularRecomendacao(800, 'APROVADO', extraBase, {
+      'boa-vista-acerta-pf': {
+        pendenciasFinanceiras: { quantidadeOcorrencia: '0' },
+        restricoes: { quantidadeOcorrencias: '0' },
+        chequeSemFundoBacen: { quantidadeOcorrencia: '2' },
+      },
+    })
+    expect(rec.fatoresNegativos.some(f => f.includes('Cheque'))).toBe(true)
+  })
+})
+
+describe('protestos-brasil', () => {
+  it('sem protestos adiciona fator positivo', () => {
+    const rec = calcularRecomendacao(800, 'APROVADO', extraBase, {
+      'protestos-brasil': { constamProtestos: false, numeroTotalProtestos: 0 },
+    })
+    expect(rec.fatoresPositivos.some(f => f.includes('protesto'))).toBe(true)
+  })
+
+  it('protestos penalizam', () => {
+    const rec = calcularRecomendacao(800, 'APROVADO', extraBase, {
+      'protestos-brasil': { constamProtestos: true, numeroTotalProtestos: 3, valorTotalProtestos: '8500' },
+    })
+    expect(rec.fatoresNegativos.some(f => f.includes('protesto'))).toBe(true)
+  })
+})

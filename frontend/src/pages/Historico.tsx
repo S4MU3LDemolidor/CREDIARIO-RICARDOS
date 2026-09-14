@@ -53,7 +53,7 @@ export function Historico() {
   }
 
   return (
-    <div className="px-8 py-8">
+    <div className="px-4 sm:px-8 py-8">
 
       {/* Page header */}
       <div className="pb-6 border-b border-[#e5e7eb] flex items-center justify-between gap-4">
@@ -77,7 +77,7 @@ export function Historico() {
           <p className="text-sm font-medium text-[#111827]">Filtros</p>
           <p className="text-sm text-[#6b7280] mt-1">Busque por CPF, operador, resultado e período</p>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <input type="text" placeholder="Filtrar por CPF" value={filtros.cpf}
             onChange={e => setFiltros({ cpf: e.target.value })} className={inp} />
           <select value={filtros.operador} onChange={e => setFiltros({ operador: e.target.value })} className={inp}>
@@ -116,7 +116,7 @@ export function Historico() {
 
           {/* Tabela */}
           <div className={selectedRow ? 'flex-1 min-w-0' : 'w-full'}>
-            <div className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden">
+            <div className="bg-white border border-[#e5e7eb] rounded-xl overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[#f3f4f6]">

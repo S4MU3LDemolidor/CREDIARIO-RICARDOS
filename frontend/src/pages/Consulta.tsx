@@ -322,7 +322,7 @@ export function Consulta() {
 
   return (
     <>
-      <div className="px-8 py-8">
+      <div className="px-4 sm:px-8 py-8">
 
         {/* Page header */}
         <div className="pb-6 border-b border-[#e5e7eb] flex items-start justify-between gap-4">
@@ -405,7 +405,7 @@ export function Consulta() {
 
           {/* Análise */}
           <SettingRow label="Análise" description="Fatores adicionais que influenciam a recomendação final">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <Check checked={documentoConferido} onChange={setDocumento}   label="Documento conferido" />
               <Check checked={temComprovante}     onChange={setComprovante} label="Comprovante de renda" />
               <Check checked={temIndicacao}       onChange={setIndicacao}   label="Tem indicação" />

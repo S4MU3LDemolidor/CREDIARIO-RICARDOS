@@ -257,10 +257,11 @@ Deno.serve(async (req) => {
 
   // ── Atualizar dados_extras na linha de cache quando novos extras foram buscados ──
   if (scoreFromCache && scoreData && Object.keys(dadosExtras).length > 0) {
-    await supabase
+    supabase
       .from('consultas')
       .update({ dados_extras: dadosExtras })
       .eq('id', scoreData.id)
+      .then(({ error }) => { if (error) console.error('Failed to save dados_extras:', error) })
   }
 
   return jsonResponse({

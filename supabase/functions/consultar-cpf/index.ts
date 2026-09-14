@@ -124,6 +124,7 @@ Deno.serve(async (req) => {
   // ── Verificar cache do score ──────────────────────────────────────────────
   let scoreFromCache = false
   let scoreData: {
+    id: string
     score: number
     veredito: string
     faixa: string | null
@@ -138,7 +139,7 @@ Deno.serve(async (req) => {
 
     const { data: cached } = await supabase
       .from('consultas')
-      .select('score, veredito, faixa, capacidade_pagamento, perfil_credito, criado_em')
+      .select('id, score, veredito, faixa, capacidade_pagamento, perfil_credito, criado_em')
       .eq('cpf', cpfDigits)
       .eq('tipo_resultado', 'ok')
       .gte('criado_em', cacheLimit.toISOString())
@@ -249,6 +250,14 @@ Deno.serve(async (req) => {
       apis_utilizadas: ['score-credito-quod', ...slugsExtras],
       dados_extras: Object.keys(dadosExtras).length > 0 ? dadosExtras : null,
     })
+  }
+
+  // ── Atualizar dados_extras na linha de cache quando novos extras foram buscados ──
+  if (scoreFromCache && scoreData && Object.keys(dadosExtras).length > 0) {
+    await supabase
+      .from('consultas')
+      .update({ dados_extras: dadosExtras })
+      .eq('id', scoreData.id)
   }
 
   return jsonResponse({

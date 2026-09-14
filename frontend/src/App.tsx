@@ -3,6 +3,7 @@ import { Login } from './pages/Login'
 import { Consulta } from './pages/Consulta'
 import { Historico } from './pages/Historico'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { AppLayout } from './components/AppLayout'
 
 export function App() {
   return (
@@ -13,7 +14,9 @@ export function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <Consulta />
+              <AppLayout>
+                <Consulta />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -21,7 +24,9 @@ export function App() {
           path="/historico"
           element={
             <ProtectedRoute>
-              <Historico />
+              <AppLayout>
+                <Historico />
+              </AppLayout>
             </ProtectedRoute>
           }
         />

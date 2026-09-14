@@ -13,6 +13,8 @@ export function useConsulta() {
   async function consultar(
     cpf: string,
     documentoConferido: boolean,
+    apisExtras: string[] = [],
+    nomeCliente: string = '',
     motivoForca?: string
   ) {
     setState({ status: 'loading' })
@@ -21,6 +23,8 @@ export function useConsulta() {
       body: {
         cpf,
         documento_conferido: documentoConferido,
+        apis_extras: apisExtras,
+        nome_cliente: nomeCliente,
         ...(motivoForca ? { motivo_forca: motivoForca } : {}),
       },
     })

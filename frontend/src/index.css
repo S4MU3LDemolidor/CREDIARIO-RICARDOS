@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #f9fafb;
+    color: #111827;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+  input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; }
+  option { background: #fff; color: #111827; }
+}

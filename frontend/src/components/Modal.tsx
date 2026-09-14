@@ -21,11 +21,11 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm"
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md mx-4">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">{title}</h2>
+      <div className="animate-fade-up bg-white border border-[#e8e8e8] rounded-xl p-6 w-full max-w-md mx-4 shadow-xl">
+        <h2 className="text-xs font-semibold text-[#999] uppercase tracking-[0.15em] mb-5">{title}</h2>
         {children}
       </div>
     </div>

@@ -10,7 +10,6 @@ export function Login() {
   const [error, setError]       = useState<string | null>(null)
   const [loading, setLoading]   = useState(false)
 
-  // Ja autenticado: redireciona
   if (session) {
     navigate('/', { replace: true })
     return null
@@ -22,53 +21,77 @@ export function Login() {
     setLoading(true)
     const err = await signIn(email, password)
     setLoading(false)
-    if (err) setError('E-mail ou senha invalidos.')
+    if (err) setError('E-mail ou senha inválidos.')
     else navigate('/', { replace: true })
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 w-full max-w-sm">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-1">Crediário</h1>
-        <p className="text-gray-400 text-sm mb-6">Análise de crédito</p>
+    <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-6">
+      <div className="w-full max-w-sm animate-fade-up">
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Brand */}
+        <div className="mb-10 flex items-center gap-3">
+          <div className="w-1 h-8 bg-[#aa0000] rounded-full" />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              autoComplete="email"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <h1 className="font-bold text-2xl text-[#111827] tracking-tight leading-none">
+              CREDI<span className="text-[#aa0000]">ÁRIO</span>
+            </h1>
+            <p className="text-[10px] text-[#ccc] font-mono tracking-wider mt-1 uppercase">
+              Sistema de Análise de Crédito
+            </p>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              autoComplete="current-password"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+        </div>
+
+        {/* Form card */}
+        <div className="bg-white border border-[#e8e8e8] rounded-2xl p-7 shadow-sm space-y-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="col-span-2">
+              <label className="block text-[10px] font-semibold text-[#bbb] uppercase tracking-[0.15em] mb-1.5">
+                E-mail
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                autoComplete="email"
+                placeholder="voce@loja.com"
+                className="w-full bg-[#f8f8f8] border border-[#eee] rounded-lg px-4 py-2.5 text-sm text-[#111]
+                           placeholder:text-[#ccc] focus:outline-none focus:border-[#ccc] transition-colors"
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-[10px] font-semibold text-[#bbb] uppercase tracking-[0.15em] mb-1.5">
+                Senha
+              </label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                autoComplete="current-password"
+                placeholder="••••••••"
+                className="w-full bg-[#f8f8f8] border border-[#eee] rounded-lg px-4 py-2.5 text-sm text-[#111]
+                           focus:outline-none focus:border-[#ccc] transition-colors"
+              />
+            </div>
           </div>
 
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && (
+            <p className="text-[#aa0000] text-xs px-3 py-2 bg-[#fef2f2] border border-[#fca5a5] rounded-lg">{error}</p>
+          )}
 
           <button
             type="submit"
+            onClick={handleSubmit}
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium
-                       hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            className="w-full bg-[#111] text-white py-3 rounded-lg text-sm font-semibold
+                       hover:bg-[#333] disabled:opacity-40 transition-colors tracking-wide mt-1"
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
-        </form>
+        </div>
+
       </div>
     </div>
   )

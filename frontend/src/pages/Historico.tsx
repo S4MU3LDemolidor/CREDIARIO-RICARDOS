@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Spinner } from '../components/Spinner'
 import { VeredittoBadge, scoreColor } from '../components/Badge'
 import { DadosExtrasView } from '../components/DadosExtrasView'
@@ -19,17 +19,21 @@ export function Historico() {
   const [selectedRow, setSelectedRow] = useState<ConsultaRow | null>(null)
   const [selectedExtras, setSelectedExtras] = useState<DadosExtras | null>(null)
   const [extrasLoading, setExtrasLoading] = useState(false)
+  const activeExtrasId = useRef<string | null>(null)
 
   async function handleRowClick(row: ConsultaRow) {
     if (selectedRow?.id === row.id) {
       setSelectedRow(null)
       setSelectedExtras(null)
+      activeExtrasId.current = null
       return
     }
     setSelectedRow(row)
     setSelectedExtras(null)
     setExtrasLoading(true)
+    activeExtrasId.current = row.id
     const extras = await loadDadosExtras(row.id)
+    if (activeExtrasId.current !== row.id) return
     setSelectedExtras(extras)
     setExtrasLoading(false)
   }
@@ -68,7 +72,7 @@ export function Historico() {
       </div>
 
       {/* Filtros — settings row */}
-      <div className="grid grid-cols-[240px_1fr] gap-8 py-6 border-b border-[#e5e7eb]">
+      <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-4 sm:gap-8 py-6 border-b border-[#e5e7eb]">
         <div>
           <p className="text-sm font-medium text-[#111827]">Filtros</p>
           <p className="text-sm text-[#6b7280] mt-1">Busque por CPF, operador, resultado e período</p>
@@ -108,7 +112,7 @@ export function Historico() {
       )}
 
       {!loading && !error && (
-        <div className="pt-6 flex gap-6 items-start">
+        <div className="pt-6 flex flex-col lg:flex-row gap-6 items-start">
 
           {/* Tabela */}
           <div className={selectedRow ? 'flex-1 min-w-0' : 'w-full'}>
@@ -187,13 +191,13 @@ export function Historico() {
 
           {/* Painel de detalhe — settings rows */}
           {selectedRow && (
-            <div className="w-[340px] shrink-0 animate-fade-in">
+            <div className="w-full lg:w-[340px] lg:shrink-0 animate-fade-in">
               <div className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden sticky top-6">
 
                 {/* Header */}
                 <div className="px-5 py-3.5 border-b border-[#f3f4f6] flex items-center justify-between">
                   <p className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Detalhe</p>
-                  <button onClick={() => setSelectedRow(null)}
+                  <button onClick={() => { setSelectedRow(null); setSelectedExtras(null); setExtrasLoading(false); activeExtrasId.current = null }}
                     className="text-[#d1d5db] hover:text-[#6b7280] transition-colors">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

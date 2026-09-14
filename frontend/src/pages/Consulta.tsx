@@ -146,7 +146,7 @@ function ResultadoOkView({
       <div className="divide-y divide-[#e5e7eb]">
 
         {/* Identificação */}
-        <div className="grid grid-cols-[240px_1fr] gap-8 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-4 sm:gap-8 py-6">
           <div>
             <p className="text-sm font-medium text-[#111827]">Identificação</p>
             <p className="text-sm text-[#6b7280] mt-1">Dados do cliente consultado</p>
@@ -161,7 +161,7 @@ function ResultadoOkView({
         </div>
 
         {/* Score */}
-        <div className="grid grid-cols-[240px_1fr] gap-8 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-4 sm:gap-8 py-6">
           <div>
             <p className="text-sm font-medium text-[#111827]">Score de Crédito</p>
             <p className="text-sm text-[#6b7280] mt-1">Pontuação QUOD (0–1000)</p>
@@ -184,7 +184,7 @@ function ResultadoOkView({
         </div>
 
         {/* Recomendação */}
-        <div className="grid grid-cols-[240px_1fr] gap-8 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-4 sm:gap-8 py-6">
           <div>
             <p className="text-sm font-medium text-[#111827]">Recomendação</p>
             <p className="text-sm text-[#6b7280] mt-1">Análise baseada em todos os fatores</p>
@@ -196,7 +196,7 @@ function ResultadoOkView({
 
         {/* Análise Quod */}
         {(data.capacidadePagamento || data.perfil) && (
-          <div className="grid grid-cols-[240px_1fr] gap-8 py-6">
+          <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-4 sm:gap-8 py-6">
             <div>
               <p className="text-sm font-medium text-[#111827]">Análise Quod</p>
               <p className="text-sm text-[#6b7280] mt-1">Perfil e capacidade de pagamento</p>
@@ -237,7 +237,7 @@ function ResultadoOkView({
 
 function SettingRow({ label, description, children }: { label: string; description: string; children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-[240px_1fr] gap-8 py-6">
+    <div className="grid grid-cols-1 sm:grid-cols-[240px_1fr] gap-4 sm:gap-8 py-6">
       <div>
         <p className="text-sm font-medium text-[#111827]">{label}</p>
         <p className="text-sm text-[#6b7280] mt-1 leading-relaxed">{description}</p>

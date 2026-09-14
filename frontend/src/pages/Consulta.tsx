@@ -22,6 +22,8 @@ const API_OPCOES = [
   { slug: 'processos-agrupada',    nome: 'Processos Judiciais',              descricao: 'Total de processos como réu/autor, valor das ações, distribuição por área e ano',                   preco: 1.65 },
   { slug: 'antecedentes-federais', nome: 'Antecedentes Criminais — PF',     descricao: 'Certidão SINIC da Polícia Federal — condenações com trânsito em julgado',                           preco: 0.60 },
   { slug: 'assistencia-social-pf', nome: 'Benefícios Sociais',              descricao: 'Bolsa Família, BPC, Auxílio Emergencial, Garantia-Safra, Seguro-Defeso (últimos 12 meses)',          preco: 1.07 },
+  { slug: 'boa-vista-acerta-pf',   nome: 'Análise Boa Vista',               descricao: 'Score, pendências financeiras, restrições, protestos e renda presumida — base Boa Vista SCPC',      preco: 12.28 },
+  { slug: 'protestos-brasil',      nome: 'Protestos em Cartório',            descricao: 'Existência e detalhamento de protestos em cartórios de todo o Brasil',                              preco: 6.50 },
 ] as const
 
 type ApiSlug = typeof API_OPCOES[number]['slug']

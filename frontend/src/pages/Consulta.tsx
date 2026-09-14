@@ -9,7 +9,7 @@ import { inp, sel } from '../lib/styles'
 import {
   calcularRecomendacao, FormExtra, Recomendacao, TipoMoradia,
 } from '../lib/recomendacao'
-import { ResultadoOk, Veredito, DadosExtras } from '../types'
+import { ResultadoOk } from '../types'
 
 // ─── APIs disponíveis ─────────────────────────────────────────────────────────
 

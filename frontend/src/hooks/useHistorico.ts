@@ -41,7 +41,7 @@ export function useHistorico() {
       .then(({ data, error: err }) => {
         if (cancelled) return
         if (err) setError(err.message)
-        else setRows((data ?? []).map(r => ({ ...r, dados_extras: null })) as ConsultaRow[])
+        else setRows((data ?? []).map(r => ({ ...r, dados_extras: null })) as unknown as ConsultaRow[])
         setLoading(false)
       })
 
